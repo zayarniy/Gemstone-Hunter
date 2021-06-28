@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
-namespace Gemstone_Hunter_Content
+namespace MonoWithWF
 {
     /// <summary>
     /// This is the main type for your game.
@@ -12,11 +13,47 @@ namespace Gemstone_Hunter_Content
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        IntPtr drawSurface;
+        System.Windows.Forms.Form parentForm;
+        System.Windows.Forms.PictureBox pictureBox;
+        System.Windows.Forms.Control gameForm;
+
+        public Game1(IntPtr drawSurface,
+                    System.Windows.Forms.Form parentForm,
+                    System.Windows.Forms.PictureBox surfacePictureBox)
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.Window.Title = "!!!!";
+
+            this.drawSurface = drawSurface;
+            this.parentForm = parentForm;
+            this.pictureBox = surfacePictureBox;
+
+            graphics.PreparingDeviceSettings +=
+                new EventHandler<PreparingDeviceSettingsEventArgs>(
+                graphics_PreparingDeviceSettings);
+
+
+            Mouse.WindowHandle = drawSurface;
+
+            gameForm = System.Windows.Forms.Control.FromHandle(this.Window.Handle);
+            gameForm.VisibleChanged += GameForm_VisibleChanged;
+//            pictureBox.SizeChanged += new EventHandler(pictureBox_SizeChanged);
+
+
+        }
+
+        private void GameForm_VisibleChanged(object sender, EventArgs e)
+        {
+            //if (gameForm.Visible == true) gameForm.Visible = false;
+        }
+
+        void graphics_PreparingDeviceSettings(object sender,
+            PreparingDeviceSettingsEventArgs e)
+        {
+
+            e.GraphicsDeviceInformation.PresentationParameters.DeviceWindowHandle = drawSurface;
+
         }
 
         /// <summary>
@@ -40,7 +77,9 @@ namespace Gemstone_Hunter_Content
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            gameForm.Left = parentForm.Left + pictureBox.Left;
+            gameForm.Top = parentForm.Top + pictureBox.Top;
+            parentForm.TopMost = true;
             // TODO: use this.Content to load your game content here
         }
 
@@ -64,7 +103,10 @@ namespace Gemstone_Hunter_Content
                 Exit();
 
             // TODO: Add your update logic here
-
+            MouseState ms = Mouse.GetState();
+            // System.Diagnostics.Debug.WriteLine("x:" + ms.X + " y:" + ms.Y);
+            //count++;
+            parentForm.Text = "x:" + ms.Position.X + " y:" + ms.Position.Y;
             base.Update(gameTime);
         }
 
