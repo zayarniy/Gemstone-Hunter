@@ -40,16 +40,11 @@ namespace Level_Editor
             graphics.PreparingDeviceSettings +=
             new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);
             Mouse.WindowHandle = drawSurface;
-
             gameForm =System.Windows.Forms.Control.FromHandle(this.Window.Handle);
-            vscroll =(System.Windows.Forms.VScrollBar)parentForm.Controls[
-            "vScrollBar1"];
-            hscroll =
-            (System.Windows.Forms.HScrollBar)parentForm.Controls["hScrollBar1"];
-            gameForm.VisibleChanged +=
-            new EventHandler(gameForm_VisibleChanged);
-            gameForm.SizeChanged +=
-            new EventHandler(pictureBox_SizeChanged);
+            vscroll =(System.Windows.Forms.VScrollBar)parentForm.Controls["vScrollBar1"];
+            hscroll =(System.Windows.Forms.HScrollBar)parentForm.Controls["hScrollBar1"];
+            gameForm.VisibleChanged += new EventHandler(gameForm_VisibleChanged);
+            gameForm.SizeChanged += new EventHandler(pictureBox_SizeChanged);
         }
 
         private void gameForm_VisibleChanged(object sender, EventArgs e)
@@ -59,8 +54,7 @@ namespace Level_Editor
         }
         void pictureBox_SizeChanged(object sender, EventArgs e)
         {
-            if (parentForm.WindowState !=
-            System.Windows.Forms.FormWindowState.Minimized)
+            if (parentForm.WindowState != System.Windows.Forms.FormWindowState.Minimized)
             {
                 graphics.PreferredBackBufferWidth = pictureBox.Width;
                 graphics.PreferredBackBufferHeight = pictureBox.Height;
@@ -121,13 +115,65 @@ namespace Level_Editor
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        //protected override void Update(GameTime gameTime)
+        //{
+        //    if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+        //        Exit();
+
+        //    // TODO: Add your update logic here
+
+        //    base.Update(gameTime);
+        //}
+
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-
+            Camera.Position = new Vector2(hscroll.Value, vscroll.Value);
+            MouseState ms = Mouse.GetState();
+            if ((ms.X > 0) && (ms.Y > 0) &&
+            (ms.X < Camera.ViewPortWidth) &&
+            (ms.Y < Camera.ViewPortHeight))
+            {
+                Vector2 mouseLoc = Camera.ScreenToWorld(
+                new Vector2(ms.X, ms.Y));
+                if (Camera.WorldRectangle.Contains(
+                (int)mouseLoc.X, (int)mouseLoc.Y))
+                {
+                    if (ms.LeftButton == ButtonState.Pressed)
+                    {
+                        TileMap.SetTileAtCell(
+                        TileMap.GetCellByPixelX((int)mouseLoc.X),
+                        TileMap.GetCellByPixelY((int)mouseLoc.Y),
+                        DrawLayer,
+                        DrawTile);
+                    }
+                    if ((ms.RightButton == ButtonState.Pressed) &&
+                    (lastMouseState.RightButton ==
+                    ButtonState.Released))
+                    {
+                        if (EditingCode)
+                        {
+                            TileMap.GetMapSquareAtCell(
+   TileMap.GetCellByPixelX((int)mouseLoc.X),
+   TileMap.GetCellByPixelY((int)mouseLoc.Y)
+   ).CodeValue = CurrentCodeValue;
+                        }
+                        else
+                        {
+                            TileMap.GetMapSquareAtCell(
+                            TileMap.GetCellByPixelX((int)mouseLoc.X),
+                            TileMap.GetCellByPixelY((int)mouseLoc.Y)
+                            ).TogglePassable();
+                        }
+                    }
+                    HoverCodeValue =
+                    TileMap.GetMapSquareAtCell(
+                    TileMap.GetCellByPixelX(
+                    (int)mouseLoc.X),
+                    TileMap.GetCellByPixelY(
+                    (int)mouseLoc.Y)).CodeValue;
+                }
+            }
+            lastMouseState = ms;
             base.Update(gameTime);
         }
 
