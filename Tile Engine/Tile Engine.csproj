@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6C489486-F2DB-4CFC-B2BC-73BBA6828DF5}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <ProjectGuid>{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gemstone_Hunter</RootNamespace>
-    <AssemblyName>Gemstone Hunter</AssemblyName>
+    <RootNamespace>Tile_Engine</RootNamespace>
+    <AssemblyName>Tile Engine</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -37,12 +37,14 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="TileMap.cs" />
+    <Compile Include="MapSquare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,21 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Textures\Gem.png" />
-    <Content Include="Content\Textures\PlatformTiles.png" />
-    <Content Include="Content\Textures\TitleScreen.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
-    <None Include="Content\Fonts\Pericles8.spritefont" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Tile Engine\Tile Engine.csproj">
-      <Project>{ca99f4a8-179a-42d8-a1b2-498aa8de9903}</Project>
-      <Name>Tile Engine</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

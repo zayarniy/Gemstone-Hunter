@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Tile_Engine;
 
-namespace Gemstone_Hunter
+namespace Gemstone_Hunter_Content
 {
     /// <summary>
     /// This is the main type for your game.
@@ -40,12 +39,6 @@ namespace Gemstone_Hunter
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            TileMap.Initialize(Content.Load<Texture2D>(@"Textures\PlatformTiles"));
-            TileMap.SetTileAtCell(3, 3, 1, 10);
-            Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 * 48);
-            Camera.Position = Vector2.Zero;
-            Camera.ViewPortWidth = 800;
-            Camera.ViewPortHeight = 600;
 
             // TODO: use this.Content to load your game content here
         }
@@ -80,12 +73,10 @@ namespace Gemstone_Hunter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(
-            SpriteSortMode.BackToFront,
-            BlendState.AlphaBlend);
-            TileMap.Draw(spriteBatch);
-            spriteBatch.End();
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // TODO: Add your drawing code here
+
             base.Draw(gameTime);
         }
     }

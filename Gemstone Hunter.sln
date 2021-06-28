@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gemstone Hunter", "Gemstone Hunter\Gemstone Hunter.csproj", "{6C489486-F2DB-4CFC-B2BC-73BBA6828DF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tile Engine", "Tile Engine\Tile Engine.csproj", "{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gemstone Hunter Content", "Gemstone Hunter Content\Gemstone Hunter Content.csproj", "{F2920FE2-903B-4A93-8CC3-C09E876B3444}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Level Editor", "Level Editor\Level Editor.csproj", "{090106B4-D2C6-4DAF-BA78-07A16BFE3A93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +21,18 @@ Global
 		{6C489486-F2DB-4CFC-B2BC-73BBA6828DF5}.Debug|x86.Build.0 = Debug|x86
 		{6C489486-F2DB-4CFC-B2BC-73BBA6828DF5}.Release|x86.ActiveCfg = Release|x86
 		{6C489486-F2DB-4CFC-B2BC-73BBA6828DF5}.Release|x86.Build.0 = Release|x86
+		{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}.Debug|x86.ActiveCfg = Debug|x86
+		{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}.Debug|x86.Build.0 = Debug|x86
+		{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}.Release|x86.ActiveCfg = Release|x86
+		{CA99F4A8-179A-42D8-A1B2-498AA8DE9903}.Release|x86.Build.0 = Release|x86
+		{F2920FE2-903B-4A93-8CC3-C09E876B3444}.Debug|x86.ActiveCfg = Debug|x86
+		{F2920FE2-903B-4A93-8CC3-C09E876B3444}.Debug|x86.Build.0 = Debug|x86
+		{F2920FE2-903B-4A93-8CC3-C09E876B3444}.Release|x86.ActiveCfg = Release|x86
+		{F2920FE2-903B-4A93-8CC3-C09E876B3444}.Release|x86.Build.0 = Release|x86
+		{090106B4-D2C6-4DAF-BA78-07A16BFE3A93}.Debug|x86.ActiveCfg = Debug|x86
+		{090106B4-D2C6-4DAF-BA78-07A16BFE3A93}.Debug|x86.Build.0 = Debug|x86
+		{090106B4-D2C6-4DAF-BA78-07A16BFE3A93}.Release|x86.ActiveCfg = Release|x86
+		{090106B4-D2C6-4DAF-BA78-07A16BFE3A93}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
