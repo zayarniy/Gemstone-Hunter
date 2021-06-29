@@ -23,6 +23,7 @@ namespace Level_Editor
         System.Windows.Forms.Form parentForm;
         System.Windows.Forms.PictureBox pictureBox;
         System.Windows.Forms.Control gameForm;
+        Texture2D pointer;
 
         public int DrawLayer = 0;
         public int DrawTile = 0;
@@ -34,6 +35,8 @@ namespace Level_Editor
         System.Windows.Forms.VScrollBar vscroll;
         System.Windows.Forms.HScrollBar hscroll;
 
+
+        int xp, yp;//для указателя мыши на окне Windows Forms
         public Game1(IntPtr drawSurface,
                     System.Windows.Forms.Form parentForm,
                     System.Windows.Forms.PictureBox surfacePictureBox)
@@ -45,7 +48,7 @@ namespace Level_Editor
             this.parentForm = parentForm;
             this.pictureBox = surfacePictureBox;
 
-          //  graphics.PreparingDeviceSettings +=new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);                        
+            graphics.PreparingDeviceSettings +=new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);                        
 
             gameForm = System.Windows.Forms.Control.FromHandle(this.Window.Handle);
             gameForm.VisibleChanged += new EventHandler(gameForm_VisibleChanged);
@@ -53,7 +56,9 @@ namespace Level_Editor
 
             vscroll =(System.Windows.Forms.VScrollBar)parentForm.Controls["vScrollBar1"];
             hscroll =(System.Windows.Forms.HScrollBar)parentForm.Controls["hScrollBar1"];
-            Mouse.WindowHandle = drawSurface;
+            //It's not working in Monogame
+            // Mouse.WindowHandle = drawSurface;
+            //https://stackoverflow.com/questions/33812634/mouse-not-working-with-monogame-in-winforms/33921015#33921015?newreg=d6382ab9112a4f0c8c188c74ee5eb0cc
         }
 
         void graphics_PreparingDeviceSettings(object sender,
@@ -74,15 +79,15 @@ namespace Level_Editor
 
         void pictureBox_SizeChanged(object sender, EventArgs e)
         {
-            //if (parentForm.WindowState !=
-            //    System.Windows.Forms.FormWindowState.Minimized)
-            //{
-            //    graphics.PreferredBackBufferWidth = pictureBox.Width;
-            //    graphics.PreferredBackBufferHeight = pictureBox.Height;
-            //    Camera.ViewPortWidth = pictureBox.Width;
-            //    Camera.ViewPortHeight = pictureBox.Height;
-            //    graphics.ApplyChanges();
-            //}
+            if (parentForm.WindowState !=
+                System.Windows.Forms.FormWindowState.Minimized)
+            {
+                graphics.PreferredBackBufferWidth = pictureBox.Width;
+                graphics.PreferredBackBufferHeight = pictureBox.Height;
+                Camera.ViewPortWidth = pictureBox.Width;
+                Camera.ViewPortHeight = pictureBox.Height;
+                graphics.ApplyChanges();
+            }
         }
 
         /// <summary>
@@ -94,7 +99,7 @@ namespace Level_Editor
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            //this.IsMouseVisible = true;
+            this.IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -116,7 +121,7 @@ namespace Level_Editor
 
             TileMap.spriteFont =
                 Content.Load<SpriteFont>(@"Fonts\Pericles8");
-
+            pointer = Content.Load<Texture2D>(@"Textures\pointer");
             lastMouseState = Mouse.GetState();
 
             pictureBox_SizeChanged(null, null);
@@ -149,9 +154,10 @@ namespace Level_Editor
             MouseState ms = Mouse.GetState();
             // System.Diagnostics.Debug.WriteLine("x:" + ms.X + " y:" + ms.Y);
             count++;
-            int X = parentForm.Left - gameForm.Left + pictureBox.Left+ms.X;// ms.X - gameForm.Left;
-            int Y = parentForm.Top - gameForm.Top + pictureBox.Top + ms.Y;
-            parentForm.Text = "MSx:" + ms.Position.X + " MSy:" + ms.Position.Y+" X:"+X+" Y:"+Y;
+            //int X = gameForm.Left - parentForm.Left +pictureBox.Left+ms.X;// ms.X - gameForm.Left;
+            //int Y =  gameForm.Top - parentForm.Top + pictureBox.Top + ms.Y;
+            xp = ms.X;yp = ms.Y;
+            parentForm.Text = "MSx:" + ms.Position.X + " MSy:" + ms.Position.Y+" XP:"+xp+" yp:"+yp;
             //parentForm.Text = count.ToString();
             if ((ms.X > 0) && (ms.Y > 0) &&
                 (ms.X < Camera.ViewPortWidth) &&
@@ -211,12 +217,13 @@ namespace Level_Editor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.Aqua);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 BlendState.AlphaBlend);
             TileMap.Draw(spriteBatch);
+            spriteBatch.Draw(pointer, new Vector2(xp, yp),Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
