@@ -17,6 +17,17 @@ namespace Gemstone_Hunter
 
         Player player;
 
+        enum GameState { TitleScreen, Playing, PlayerDead, GameOver };
+        GameState gameState = GameState.TitleScreen;
+
+
+        Vector2 gameOverPosition = new Vector2(350, 300);
+        Vector2 livesPosition = new Vector2(600, 580);
+        Texture2D titleScreen;
+        float deathTimer = 0.0f;
+        float deathDelay = 5.0f;
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -44,21 +55,27 @@ namespace Gemstone_Hunter
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             TileMap.Initialize(Content.Load<Texture2D>(@"Textures\PlatformTiles"));
+            TileMap.spriteFont =
+            Content.Load<SpriteFont>(@"Fonts\Pericles8");
             pericles8 = Content.Load<SpriteFont>(@"Fonts\Pericles8");
-            //TileMap.SetTileAtCell(3, 3, 1, 10);
-            Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 * 48);
+            titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
+            Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 *
+            48);
             Camera.Position = Vector2.Zero;
             Camera.ViewPortWidth = 800;
             Camera.ViewPortHeight = 600;
             player = new Player(Content);
-            //player.WorldLocation = new Vector2(350, 300);
             LevelManager.Initialize(Content, player);
-            LevelManager.LoadLevel(0);
+        }
 
-            // TODO: use this.Content to load your game content here
+        private void StartNewGame()
+        {
+            player.Revive();
+            player.LivesRemaining = 3;
+            player.WorldLocation = Vector2.Zero;
+            LevelManager.LoadLevel(0);
         }
 
         /// <summary>
@@ -77,12 +94,60 @@ namespace Gemstone_Hunter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
-            player.Update(gameTime);
-            LevelManager.Update(gameTime);
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
+            ButtonState.Pressed)
+                this.Exit();
+            KeyboardState keyState = Keyboard.GetState();
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (gameState == GameState.TitleScreen)
+            {
+                if (keyState.IsKeyDown(Keys.Space) ||
+                gamepadState.Buttons.A == ButtonState.Pressed)
+                {
+                    StartNewGame(); gameState = GameState.Playing;
+                }
+            }
+            if (gameState == GameState.Playing)
+            {
+                player.Update(gameTime);
+                LevelManager.Update(gameTime);
+                if (player.Dead)
+                {
+                    if (player.LivesRemaining > 0)
+                    {
+                        gameState = GameState.PlayerDead;
+                        deathTimer = 0.0f;
+                    }
+                    else
+                    {
+                        gameState = GameState.GameOver;
+                        deathTimer = 0.0f;
+                    }
+                }
+            }
+            if (gameState == GameState.PlayerDead)
+            {
+                player.Update(gameTime);
+                LevelManager.Update(gameTime);
+                deathTimer += elapsed;
+                if (deathTimer > deathDelay)
+                {
+                    player.WorldLocation = Vector2.Zero;
+                    LevelManager.ReloadLevel();
+                    player.Revive();
+                    gameState = GameState.Playing;
+                }
+            }
+            if (gameState == GameState.GameOver)
+            {
+                deathTimer += elapsed;
+                if (deathTimer > deathDelay)
+                {
+                    gameState = GameState.TitleScreen;
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -96,10 +161,39 @@ namespace Gemstone_Hunter
             spriteBatch.Begin(
             SpriteSortMode.BackToFront,
             BlendState.AlphaBlend);
-            TileMap.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-            LevelManager.Draw(spriteBatch);
-            spriteBatch.DrawString(pericles8,"Score: " + player.Score.ToString(),scorePosition,Color.White);
+            if (gameState == GameState.TitleScreen)
+            {
+                spriteBatch.Draw(titleScreen, Vector2.Zero, Color.White);
+            }
+            if ((gameState == GameState.Playing) ||
+            (gameState == GameState.PlayerDead) ||
+            (gameState == GameState.GameOver))
+            {
+                TileMap.Draw(spriteBatch);
+                player.Draw(spriteBatch);
+                LevelManager.Draw(spriteBatch);
+                spriteBatch.DrawString(
+                pericles8,
+                "Score: " + player.Score.ToString(),
+                scorePosition,
+                Color.White);
+                spriteBatch.DrawString(
+                pericles8,
+                "Lives Remaining: " + player.LivesRemaining.ToString(),
+                livesPosition,
+                Color.White);
+            }
+            if (gameState == GameState.PlayerDead)
+            {
+            }
+            if (gameState == GameState.GameOver)
+            {
+                spriteBatch.DrawString(
+                pericles8,
+                "G A M E O V E R !",
+                gameOverPosition,
+                Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }

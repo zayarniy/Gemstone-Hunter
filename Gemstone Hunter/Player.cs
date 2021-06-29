@@ -125,6 +125,10 @@ namespace Gemstone_Hunter
                         newAnimation = "jump";
                     }
                 }
+                if (keyState.IsKeyDown(Keys.Up) || gamePad.ThumbSticks.Left.Y > 0.3f)
+                {
+                    checkLevelTransition();
+                }
                 if (currentAnimation == "jump")
                     newAnimation = "jump";
             }

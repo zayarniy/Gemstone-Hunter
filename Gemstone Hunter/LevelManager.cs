@@ -82,12 +82,23 @@ namespace Gemstone_Hunter
             player.WorldLocation = respawnLocation;
         }
 
-
+        #region Helper Methods
+        private static void checkCurrentCellCode()
+        {
+            string code = TileMap.CellCodeValue(
+            TileMap.GetCellByPixel(player.WorldCenter));
+            if (code == "DEAD")
+            {
+                player.Kill();
+            }
+        }
+        #endregion
 
         public static void Update(GameTime gameTime)
         {
             if (!player.Dead)
             {
+                checkCurrentCellCode();
                 for (int x = gemstones.Count - 1; x >= 0; x--)
                 {
                     gemstones[x].Update(gameTime);
