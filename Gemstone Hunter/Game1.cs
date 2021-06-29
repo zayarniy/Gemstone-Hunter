@@ -12,6 +12,10 @@ namespace Gemstone_Hunter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont pericles8;
+        Vector2 scorePosition = new Vector2(20, 580);
+
+        Player player;
 
         public Game1()
         {
@@ -28,7 +32,9 @@ namespace Gemstone_Hunter
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            this.graphics.PreferredBackBufferWidth = 800;
+            this.graphics.PreferredBackBufferHeight = 600;
+            this.graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -41,11 +47,16 @@ namespace Gemstone_Hunter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             TileMap.Initialize(Content.Load<Texture2D>(@"Textures\PlatformTiles"));
-            TileMap.SetTileAtCell(3, 3, 1, 10);
+            pericles8 = Content.Load<SpriteFont>(@"Fonts\Pericles8");
+            //TileMap.SetTileAtCell(3, 3, 1, 10);
             Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 * 48);
             Camera.Position = Vector2.Zero;
             Camera.ViewPortWidth = 800;
             Camera.ViewPortHeight = 600;
+            player = new Player(Content);
+            //player.WorldLocation = new Vector2(350, 300);
+            LevelManager.Initialize(Content, player);
+            LevelManager.LoadLevel(0);
 
             // TODO: use this.Content to load your game content here
         }
@@ -70,7 +81,8 @@ namespace Gemstone_Hunter
                 Exit();
 
             // TODO: Add your update logic here
-
+            player.Update(gameTime);
+            LevelManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -85,6 +97,9 @@ namespace Gemstone_Hunter
             SpriteSortMode.BackToFront,
             BlendState.AlphaBlend);
             TileMap.Draw(spriteBatch);
+            player.Draw(spriteBatch);
+            LevelManager.Draw(spriteBatch);
+            spriteBatch.DrawString(pericles8,"Score: " + player.Score.ToString(),scorePosition,Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

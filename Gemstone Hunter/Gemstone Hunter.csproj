@@ -41,7 +41,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimationStrip.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="Gemstone.cs" />
+    <Compile Include="LevelManager.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,6 +59,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Textures\Sprites\Gem.png" />
+    <Content Include="Content\Textures\Sprites\MonsterA\Die.png" />
+    <Content Include="Content\Textures\Sprites\MonsterA\Idle.png" />
+    <Content Include="Content\Textures\Sprites\MonsterA\Run.png" />
+    <Content Include="Content\Textures\Sprites\MonsterB\Die.png" />
+    <Content Include="Content\Textures\Sprites\MonsterB\Idle.png" />
+    <Content Include="Content\Textures\Sprites\MonsterB\Run.png" />
+    <Content Include="Content\Textures\Sprites\MonsterC\Die.png" />
+    <Content Include="Content\Textures\Sprites\MonsterC\Idle.png" />
+    <Content Include="Content\Textures\Sprites\MonsterC\Run.png" />
+    <Content Include="Content\Textures\Sprites\MonsterD\Die.png" />
+    <Content Include="Content\Textures\Sprites\MonsterD\Idle.png" />
+    <Content Include="Content\Textures\Sprites\MonsterD\Run.png" />
+    <Content Include="Content\Textures\Sprites\Player\Celebrate.png" />
+    <Content Include="Content\Textures\Sprites\Player\Die.png" />
+    <Content Include="Content\Textures\Sprites\Player\Idle.png" />
+    <Content Include="Content\Textures\Sprites\Player\Jump.png" />
+    <Content Include="Content\Textures\Sprites\Player\Run.png" />
     <Content Include="Content\Textures\Gem.png" />
     <Content Include="Content\Textures\PlatformTiles.png" />
     <Content Include="Content\Textures\TitleScreen.png" />
@@ -62,6 +86,12 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="Content\Fonts\Pericles8.spritefont" />
+    <None Include="Content\Maps\MAP000.MAP">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Maps\MAP001.MAP">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tile Engine\Tile Engine.csproj">
