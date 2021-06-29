@@ -291,8 +291,6 @@
             this.pctSurface.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pctSurface.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pctSurface.BackgroundImage")));
-            this.pctSurface.Image = ((System.Drawing.Image)(resources.GetObject("pctSurface.Image")));
             this.pctSurface.Location = new System.Drawing.Point(184, 27);
             this.pctSurface.Name = "pctSurface";
             this.pctSurface.Size = new System.Drawing.Size(471, 576);

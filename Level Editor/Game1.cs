@@ -51,7 +51,6 @@ namespace Level_Editor
             graphics.PreparingDeviceSettings +=new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);                        
 
             gameForm = System.Windows.Forms.Control.FromHandle(this.Window.Handle);
-            gameForm.VisibleChanged += new EventHandler(gameForm_VisibleChanged);
             pictureBox.SizeChanged += new EventHandler(pictureBox_SizeChanged);
 
             vscroll =(System.Windows.Forms.VScrollBar)parentForm.Controls["vScrollBar1"];
@@ -59,6 +58,8 @@ namespace Level_Editor
             //It's not working in Monogame
             // Mouse.WindowHandle = drawSurface;
             //https://stackoverflow.com/questions/33812634/mouse-not-working-with-monogame-in-winforms/33921015#33921015?newreg=d6382ab9112a4f0c8c188c74ee5eb0cc
+            //Пришлось оставлять два окна и подключать свой указатель
+            //gameForm.VisibleChanged += new EventHandler(gameForm_VisibleChanged);
         }
 
         void graphics_PreparingDeviceSettings(object sender,
@@ -72,10 +73,10 @@ namespace Level_Editor
 
         }
 
-        private void gameForm_VisibleChanged(object sender, EventArgs e)
-        {
-           // if (gameForm.Visible == true) gameForm.Visible = false;
-        }
+        //private void gameForm_VisibleChanged(object sender, EventArgs e)
+        //{
+        //    if (gameForm.Visible == true) gameForm.Visible = false;
+        //}
 
         void pictureBox_SizeChanged(object sender, EventArgs e)
         {
@@ -125,8 +126,8 @@ namespace Level_Editor
             lastMouseState = Mouse.GetState();
 
             pictureBox_SizeChanged(null, null);
-            gameForm.Left = parentForm.Left + pictureBox.Left;
-            gameForm.Top = parentForm.Top + pictureBox.Top;
+            //gameForm.Left = parentForm.Left + pictureBox.Left;
+            //gameForm.Top = parentForm.Top + pictureBox.Top;
             parentForm.TopMost = true;
 
         }

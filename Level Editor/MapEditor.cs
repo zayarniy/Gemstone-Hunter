@@ -79,17 +79,17 @@ namespace Level_Editor
             object sender,
             EventArgs e)
         {
-            //try
-            //{
-            //    TileMap.LoadMap(new FileStream(
-            //        Application.StartupPath + @"\MAP" +
-            //        cboMapNumber.Items[cboMapNumber.SelectedIndex] + ".MAP",
-            //        FileMode.Open));
-            //}
-            //catch
-            //{
-            //    System.Diagnostics.Debug.Print("Unable to load map file");
-            //}
+            try
+            {
+                TileMap.LoadMap(new FileStream(
+                    Application.StartupPath + @"\MAP" +
+                    cboMapNumber.Items[cboMapNumber.SelectedIndex] + ".MAP",
+                    FileMode.Open));
+            }
+            catch
+            {
+                System.Diagnostics.Debug.Print("Unable to load map file");
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -246,17 +246,17 @@ namespace Level_Editor
             object sender,
             EventArgs e)
         {
-            //TileMap.SaveMap(new FileStream(
-            //    Application.StartupPath + @"\MAP" +
-            //    cboMapNumber.Items[cboMapNumber.SelectedIndex] + ".MAP",
-            //    FileMode.Create));
+            TileMap.SaveMap(new FileStream(
+                Application.StartupPath + @"\MAP" +
+                cboMapNumber.Items[cboMapNumber.SelectedIndex] + ".MAP",
+                FileMode.Create));
         }
 
         private void clearMapToolStripMenuItem_Click(
             object sender,
             EventArgs e)
         {
-            //TileMap.ClearMap();
+            TileMap.ClearMap();
         }
 
         private void MapEditor_FormClosed(
